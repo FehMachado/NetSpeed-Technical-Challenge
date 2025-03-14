@@ -8,7 +8,7 @@ Public Class frmChamadosEditar
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Dim dtDepartamentos As DataTable = Dados.ListarDepartamentos()
+        Dim dtDepartamentos As DataTable = DadosDepartamentos.ListarDepartamentos()
         Me.cmbDepartamento.DataSource = dtDepartamentos
         Me.cmbDepartamento.DisplayMember = "Descricao"
         Me.cmbDepartamento.ValueMember = "ID"
@@ -17,7 +17,7 @@ Public Class frmChamadosEditar
 
     Public Sub AbrirChamado(ByVal idChamado As Integer)
 
-        Dim drChamado As DataRow = Dados.ObterChamado(idChamado)
+        Dim drChamado As DataRow = DadosChamados.ObterChamado(idChamado)
 
         Me.txtID.Text = CInt(drChamado("ID")).ToString()
         Me.txtAssunto.Text = CStr(drChamado("Assunto"))
@@ -50,7 +50,7 @@ Public Class frmChamadosEditar
 
         End If
 
-        Dim sucesso As Boolean = Dados.GravarChamado(ID, Assunto, Solicitante, Departamento, DataAbertura)
+        Dim sucesso As Boolean = DadosChamados.GravarChamado(ID, Assunto, Solicitante, Departamento, DataAbertura)
 
         If Not sucesso Then
 

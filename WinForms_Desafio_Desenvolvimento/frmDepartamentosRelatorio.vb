@@ -4,7 +4,7 @@ Imports Microsoft.Reporting.WinForms
 Public Class frmDepartamentosRelatorio
     Private Sub frmDepartamentosRelatorio_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Dim dtDepartamentos As DataTable = Dados.ListarDepartamentos()
+        Dim dtDepartamentos As DataTable = DadosDepartamentos.ListarDepartamentos()
 
         Dim rds As New ReportDataSource("dsDepartamentos", dtDepartamentos)
         Me.ReportViewer1.LocalReport.DataSources.Add(rds)

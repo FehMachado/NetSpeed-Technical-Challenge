@@ -5,7 +5,7 @@ Public Class frmChamadosListar
 
     Private Sub frmPrincipal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Dim dtChamados As DataTable = Dados.ListarChamados()
+        Dim dtChamados As DataTable = DadosChamados.ListarChamados()
         Me.dgvChamados.DataSource = dtChamados
 
     End Sub
@@ -29,7 +29,7 @@ Public Class frmChamadosListar
 
         ' ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-        Dim sucesso As Boolean = Dados.ExcluirChamado(idChamado)
+        Dim sucesso As Boolean = DadosChamados.ExcluirChamado(idChamado)
 
         If sucesso Then
 
