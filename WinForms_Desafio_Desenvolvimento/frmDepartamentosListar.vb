@@ -79,4 +79,27 @@ Public Class frmDepartamentosListar
         frm.ShowDialog()
 
     End Sub
+
+    Private Sub dgvDepartamentos_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvDepartamentos.CellDoubleClick
+
+        If e.RowIndex >= 0 Then
+            ' Obtém os dados da linha selecionada
+            Dim dgvr As DataGridViewRow = Me.dgvDepartamentos.Rows(e.RowIndex)
+            Dim drv As DataRowView = DirectCast(dgvr.DataBoundItem, DataRowView)
+            Dim idChamado As Integer = CInt(drv("ID"))
+
+            ' Abre o formulário de edição com os dados do chamado
+            Dim frm As New frmChamadosEditar()
+            frm.AbrirChamado(idChamado)
+
+            Dim dlgResult As DialogResult = frm.ShowDialog()
+
+            ' Atualiza a lista caso as alterações tenham sido salvas
+            If dlgResult = DialogResult.OK Then
+                Me.frmPrincipal_Load(sender, e)
+            End If
+        End If
+
+    End Sub
+
 End Class
