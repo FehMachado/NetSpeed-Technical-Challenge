@@ -103,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackEnd\clsDados.vb" />
+    <Compile Include="BackEnd\clsDadosBase.vb" />
+    <Compile Include="BackEnd\clsDadosChamados.vb" />
+    <Compile Include="BackEnd\clsDadosDepartamentos.vb" />
     <Compile Include="frmChamadosEditar.Designer.vb">
       <DependentUpon>frmChamadosEditar.vb</DependentUpon>
     </Compile>
@@ -120,6 +123,12 @@
       <DependentUpon>frmChamadosRelatorio.vb</DependentUpon>
     </Compile>
     <Compile Include="frmChamadosRelatorio.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDepartamentosEditar.Designer.vb">
+      <DependentUpon>frmDepartamentosEditar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDepartamentosEditar.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmDepartamentosListar.Designer.vb">
@@ -175,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmChamadosRelatorio.resx">
       <DependentUpon>frmChamadosRelatorio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDepartamentosEditar.resx">
+      <DependentUpon>frmDepartamentosEditar.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmDepartamentosListar.resx">
       <DependentUpon>frmDepartamentosListar.vb</DependentUpon>

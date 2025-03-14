@@ -4,7 +4,7 @@ Imports Microsoft.Reporting.WinForms
 Public Class frmChamadosRelatorio
     Private Sub frmChamadosRelatorio_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Dim dtChamados As DataTable = Dados.ListarChamados()
+        Dim dtChamados As DataTable = DadosChamados.ListarChamados()
 
         Dim rds As New ReportDataSource("dsChamados", dtChamados)
         Me.ReportViewer1.LocalReport.DataSources.Add(rds)

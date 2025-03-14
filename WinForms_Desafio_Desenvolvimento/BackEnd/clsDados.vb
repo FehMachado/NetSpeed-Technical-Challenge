@@ -167,5 +167,55 @@ Public Class Dados
         Return (regsAfetados > 0)
 
     End Function
+    'De
+    Public Shared Function GravarDepartamento(ByVal ID As Integer,
+                                              ByVal Descricao As String) As Boolean
+
+        Dim regsAfetados As Integer = -1
+
+        Using dbConnection As New SQLiteConnection(CONNECTION_STRING)
+            dbConnection.Open()
+
+            Dim transaction As SQLiteTransaction = dbConnection.BeginTransaction()
+
+            Try
+                Using dbCommand As SQLiteCommand = dbConnection.CreateCommand()
+                    dbCommand.Transaction = transaction
+
+                    If ID = 0 Then
+
+                        dbCommand.CommandText = "INSERT INTO departamentos (Descricao)" +
+                                                "VALUES (@Descricao)"
+
+                    Else
+
+                        dbCommand.CommandText = "UPDATE departamentos " +
+                                                "SET Descricao=@Descricao, " +
+                                                "WHERE ID=@ID "
+
+                    End If
+
+                    dbCommand.Parameters.AddWithValue("@Descricao", Descricao)
+
+                    If ID <> 0 Then
+                        dbCommand.Parameters.AddWithValue("@ID", ID)
+                    End If
+
+
+                    'dbConnection.Open()
+                    regsAfetados = dbCommand.ExecuteNonQuery()
+                    'dbConnection.Close()
+                    transaction.Commit()
+                End Using
+            Catch ex As Exception
+                transaction.Rollback()
+                'MessageBox.Show("Erro ao Inserir/Atualizar dados: " & ex.Message)
+            Finally
+                dbConnection.Close()
+            End Try
+        End Using
+
+        Return (regsAfetados > 0)
+    End Function
 
 End Class

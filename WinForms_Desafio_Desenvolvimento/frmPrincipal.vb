@@ -7,8 +7,8 @@
 
         ' Add any initialization after the InitializeComponent() call.
 
-        Dados.ListarChamados()
-        Dados.ListarDepartamentos()
+        DadosChamados.ListarChamados()
+        DadosDepartamentos.ListarDepartamentos()
 
     End Sub
 
