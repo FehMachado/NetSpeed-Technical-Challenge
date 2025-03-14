@@ -60,7 +60,7 @@ Public Class frmChamadosListar
 
         If dlgResult = DialogResult.OK Then
 
-            ' Apenas para listar os dados novamente
+            ' Atualiza a listar os dados caso tenham sido salvas
             Me.frmPrincipal_Load(sender, e)
 
         End If
@@ -75,7 +75,7 @@ Public Class frmChamadosListar
 
         If dlgResult = DialogResult.OK Then
 
-            ' Apenas para listar os dados novamente
+            ' Atualiza a listar os dados caso tenham sido salvas
             Me.frmPrincipal_Load(sender, e)
 
         End If
@@ -88,4 +88,28 @@ Public Class frmChamadosListar
         frm.ShowDialog()
 
     End Sub
+
+    Private Sub dgvChamados_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvChamados.CellDoubleClick
+
+        ' Verifica se a linha clicada é válida
+        If e.RowIndex >= 0 Then
+            ' Obtém os dados da linha selecionada
+            Dim dgvr As DataGridViewRow = Me.dgvChamados.Rows(e.RowIndex)
+            Dim drv As DataRowView = DirectCast(dgvr.DataBoundItem, DataRowView)
+            Dim idChamado As Integer = CInt(drv("ID"))
+
+            ' Abre o formulário de edição com os dados do chamado
+            Dim frm As New frmChamadosEditar()
+            frm.AbrirChamado(idChamado)
+
+            Dim dlgResult As DialogResult = frm.ShowDialog()
+
+            ' Atualiza a lista caso as alterações tenham sido salvas
+            If dlgResult = DialogResult.OK Then
+                Me.frmPrincipal_Load(sender, e)
+            End If
+
+        End If
+    End Sub
+
 End Class
