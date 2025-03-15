@@ -3,25 +3,30 @@
 Public Class DadosDepartamentos
     Inherits DadosBase
 
-#Region "Listar Departamentos"
     Public Shared Function ListarDepartamentos() As DataTable
+
         Dim dtDepartamentos As New DataTable()
 
-        Using dbConnection As SQLiteConnection = ObterConexao()
-            Using dbCommand As SQLiteCommand = dbConnection.CreateCommand()
-                dbCommand.CommandText = "SELECT * FROM departamentos"
-
-                Using dbDataAdapter As New SQLiteDataAdapter(dbCommand)
-                    dbDataAdapter.Fill(dtDepartamentos)
-                End Using
+        Try
+            Using dbConnection As SQLiteConnection = ObterConexao(),
+            dbCommand As SQLiteCommand = dbConnection.CreateCommand(), dbDataAdapter As New SQLiteDataAdapter(dbCommand)
+                dbCommand.CommandText = "SELECT 
+                                            id, 
+                                            descricao 
+                                        FROM 
+                                            departamentos"
+                dbDataAdapter.Fill(dtDepartamentos)
             End Using
-        End Using
+        Catch ex As Exception
+            MessageBox.Show("Ocorreu um erro ao obter a lista de departamentos. Por favor, se o erro persistir, entre em contato com o suporte.",
+                    "Erro",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error)
+        End Try
 
         Return dtDepartamentos
     End Function
-#End Region
 
-#Region "Gravar/Atualizar Departamento"
     Public Shared Function GravarDepartamento(ID As Integer, Descricao As String) As Boolean
         Dim regsAfetados As Integer = -1
 
@@ -34,9 +39,17 @@ Public Class DadosDepartamentos
                     dbCommand.Transaction = transaction
 
                     If ID = 0 Then
-                        dbCommand.CommandText = "INSERT INTO departamentos (Descricao) VALUES (@Descricao)"
+                        dbCommand.CommandText = "INSERT INTO 
+                                                        departamentos (Descricao) 
+                                                 VALUES 
+                                                        (@Descricao)"
                     Else
-                        dbCommand.CommandText = "UPDATE departamentos SET Descricao=@Descricao WHERE ID=@ID"
+                        dbCommand.CommandText = "UPDATE 
+                                                    departamentos 
+                                                SET 
+                                                    Descricao=@Descricao 
+                                                WHERE 
+                                                    ID=@ID"
                     End If
 
                     dbCommand.Parameters.AddWithValue("@Descricao", Descricao)
@@ -52,52 +65,88 @@ Public Class DadosDepartamentos
                 transaction.Rollback()
                 Return False
             Finally
+                transaction.Dispose()
                 dbConnection.Close()
             End Try
         End Using
 
         Return (regsAfetados > 0)
     End Function
-#End Region
 
-#Region "Obter Departamento"
     Public Shared Function ObterDepartamento(idDepartamento As Integer) As DataRow
+
+        'If idDepartamento <= 0 Then
+        '    MessageBox.Show("O ID do departamento fornecido é inválido. Por favor, verifique e tente novamente.",
+        '                "ID Inválido",
+        '                MessageBoxButtons.OK,
+        '                MessageBoxIcon.Warning)
+        '    Return Nothing
+        'End If
+
         Dim drDepartamentos As DataRow = Nothing
 
-        Using dbConnection As SQLiteConnection = ObterConexao()
-            Using dbCommand As SQLiteCommand = dbConnection.CreateCommand()
-                dbCommand.CommandText = $"SELECT * FROM departamentos WHERE ID = {idDepartamento}"
+        Try
+            Using dbConnection As SQLiteConnection = ObterConexao(),
+                dbCommand As SQLiteCommand = dbConnection.CreateCommand(),
+                dbDataAdapter As New SQLiteDataAdapter(dbCommand)
 
-                Using dbDataAdapter As New SQLiteDataAdapter(dbCommand)
-                    Dim dtChamados As New DataTable()
-                    dbDataAdapter.Fill(dtChamados)
-                    If dtChamados.Rows.Count > 0 Then
-                        drDepartamentos = dtChamados.Rows(0)
-                    End If
-                End Using
+                dbCommand.CommandText = "SELECT 
+                                            descricao 
+                                        FROM 
+                                            departamentos 
+                                        WHERE 
+                                            ID = @ID"
+
+                dbCommand.Parameters.AddWithValue("@ID", idDepartamento)
+
+                Dim dtDepartamentos As New DataTable()
+                dbDataAdapter.Fill(dtDepartamentos)
+
+                If dtDepartamentos.Rows.Count > 0 Then
+                    drDepartamentos = dtDepartamentos.Rows(0)
+                Else
+                    MessageBox.Show("Departamento não encontrado. Por favor, verifique o ID informado.",
+                                "Departamento não encontrado",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information)
+
+                End If
             End Using
-        End Using
+        Catch ex As Exception
+            MessageBox.Show("Erro ao obter o departamento. Por favor, se o erro persistir, entre em contato com o suporte.",
+                           "Erro",
+                           MessageBoxButtons.OK,
+                           MessageBoxIcon.Error)
+        End Try
 
         Return drDepartamentos
     End Function
-#End Region
 
-#Region "Excluir Departamento"
     Public Shared Function ExcluirDepartamento(idDepartamento As Integer) As Boolean
 
-        Dim regsAfetados As Integer = -1
+        If idDepartamento <= 0 Then
+            Return False
+        End If
 
-        Using dbConnection As SQLiteConnection = ObterConexao()
-            Using dbCommand As SQLiteCommand = dbConnection.CreateCommand()
-                dbCommand.CommandText = $"DELETE FROM departamentos WHERE ID = {idDepartamento}"
+        Try
+            Using dbConnection As SQLiteConnection = ObterConexao(),
+              dbCommand As SQLiteCommand = dbConnection.CreateCommand()
+
                 dbConnection.Open()
-                regsAfetados = dbCommand.ExecuteNonQuery()
-                dbConnection.Close()
+                dbCommand.CommandText = "DELETE 
+                                        FROM 
+                                            chamados 
+                                        WHERE 
+                                            ID = @ID"
+
+                dbCommand.Parameters.AddWithValue("@ID", idDepartamento)
+
+                Dim sucesso As Boolean = dbCommand.ExecuteNonQuery() > 0
+                Return sucesso
             End Using
-        End Using
+        Catch ex As Exception
+            Return False
+        End Try
 
-        Return (regsAfetados > 0)
     End Function
-#End Region
-
 End Class

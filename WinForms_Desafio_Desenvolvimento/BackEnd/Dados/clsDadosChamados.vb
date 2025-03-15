@@ -4,37 +4,79 @@ Public Class DadosChamados
     Inherits DadosBase
 
     Public Shared Function ListarChamados() As DataTable
+
         Dim dtChamados As New DataTable()
 
-        Using dbConnection As SQLiteConnection = ObterConexao()
-            Using dbCommand As SQLiteCommand = dbConnection.CreateCommand()
-                dbCommand.CommandText = "SELECT chamados.ID, Assunto, Solicitante, departamentos.Descricao AS Departamento, DataAbertura FROM chamados INNER JOIN departamentos ON chamados.Departamento = departamentos.ID"
+        Try
+            Using dbConnection As SQLiteConnection = ObterConexao(),
+                  dbCommand As SQLiteCommand = dbConnection.CreateCommand(),
+                  dbDataAdapter As New SQLiteDataAdapter(dbCommand)
 
-                Using dbDataAdapter As New SQLiteDataAdapter(dbCommand)
-                    dbDataAdapter.Fill(dtChamados)
-                End Using
+                dbCommand.CommandText = "SELECT 
+                                            chamados.ID, 
+                                            Assunto, 
+                                            Solicitante, 
+                                            departamentos.Descricao AS Departamento, 
+                                            DataAbertura 
+                                         FROM 
+                                            chamados 
+                                         INNER JOIN 
+                                            departamentos 
+                                         ON 
+                                            chamados.Departamento = departamentos.ID"
+
+                dbDataAdapter.Fill(dtChamados)
             End Using
-        End Using
+        Catch ex As Exception
+            MessageBox.Show("Ocorreu um erro ao obter a lista de chamados. Por favor, se o erro persistir, entre em contato com o suporte.",
+                    "Erro",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error)
+        End Try
 
         Return dtChamados
     End Function
 
     Public Shared Function ObterChamado(idChamado As Integer) As DataRow
+
         Dim drChamado As DataRow = Nothing
 
-        Using dbConnection As SQLiteConnection = ObterConexao()
-            Using dbCommand As SQLiteCommand = dbConnection.CreateCommand()
-                dbCommand.CommandText = $"SELECT * FROM chamados WHERE ID = {idChamado}"
+        Try
+            Using dbConnection As SQLiteConnection = ObterConexao(),
+                  dbCommand As SQLiteCommand = dbConnection.CreateCommand(),
+                  dbDataAdapter As New SQLiteDataAdapter(dbCommand)
 
-                Using dbDataAdapter As New SQLiteDataAdapter(dbCommand)
-                    Dim dtChamados As New DataTable()
-                    dbDataAdapter.Fill(dtChamados)
-                    If dtChamados.Rows.Count > 0 Then
-                        drChamado = dtChamados.Rows(0)
-                    End If
-                End Using
+                dbCommand.CommandText = "SELECT 
+                                    ID, 
+                                    Assunto, 
+                                    Solicitante, 
+                                    Departamento, 
+                                    DataAbertura 
+                                 FROM 
+                                    chamados 
+                                 WHERE 
+                                    ID = @ID"
+
+                dbCommand.Parameters.AddWithValue("@ID", idChamado)
+
+                Dim dtChamados As New DataTable()
+                dbDataAdapter.Fill(dtChamados)
+
+                If dtChamados.Rows.Count > 0 Then
+                    drChamado = dtChamados.Rows(0)
+                    'Else
+                    '    MessageBox.Show("Chamado não encontrado. Por favor, verifique o ID informado.",
+                    '                "Chamado não encontrado",
+                    '                MessageBoxButtons.OK,
+                    '                MessageBoxIcon.Information)
+                End If
             End Using
-        End Using
+        Catch ex As Exception
+            MessageBox.Show("Erro ao obter o chamado. Por favor, se o erro persistir, entre em contato com o suporte.",
+                            "Erro",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error)
+        End Try
 
         Return drChamado
     End Function
@@ -51,9 +93,20 @@ Public Class DadosChamados
                     dbCommand.Transaction = transaction
 
                     If ID = 0 Then
-                        dbCommand.CommandText = "INSERT INTO chamados (Assunto, Solicitante, Departamento, DataAbertura) VALUES (@Assunto, @Solicitante, @Departamento, @DataAbertura)"
+                        dbCommand.CommandText = "INSERT INTO 
+                                                        chamados (Assunto, Solicitante, Departamento, DataAbertura) 
+                                                 VALUES 
+                                                        (@Assunto, @Solicitante, @Departamento, @DataAbertura)"
                     Else
-                        dbCommand.CommandText = "UPDATE chamados SET Assunto=@Assunto, Solicitante=@Solicitante, Departamento=@Departamento, DataAbertura=@DataAbertura WHERE ID=@ID"
+                        dbCommand.CommandText = "UPDATE 
+                                                    chamados 
+                                                SET 
+                                                    Assunto=@Assunto, 
+                                                    Solicitante=@Solicitante, 
+                                                    Departamento=@Departamento, 
+                                                    DataAbertura=@DataAbertura 
+                                                WHERE 
+                                                    ID=@ID"
                     End If
 
                     dbCommand.Parameters.AddWithValue("@Assunto", Assunto)
@@ -70,8 +123,8 @@ Public Class DadosChamados
                 End Using
             Catch ex As Exception
                 transaction.Rollback()
-                MessageBox.Show("Erro ao inserir os dados: " & ex.Message)
             Finally
+                transaction.Dispose()
                 dbConnection.Close()
             End Try
         End Using
@@ -80,17 +133,30 @@ Public Class DadosChamados
     End Function
 
     Public Shared Function ExcluirChamado(idChamado As Integer) As Boolean
-        Dim regsAfetados As Integer = -1
 
-        Using dbConnection As SQLiteConnection = ObterConexao()
-            Using dbCommand As SQLiteCommand = dbConnection.CreateCommand()
-                dbCommand.CommandText = $"DELETE FROM chamados WHERE ID = {idChamado}"
+        If idChamado <= 0 Then
+            Return False
+        End If
+
+        Try
+            Using dbConnection As SQLiteConnection = ObterConexao(),
+            dbCommand As SQLiteCommand = dbConnection.CreateCommand()
+
                 dbConnection.Open()
-                regsAfetados = dbCommand.ExecuteNonQuery()
-                dbConnection.Close()
-            End Using
-        End Using
+                dbCommand.CommandText = "DELETE 
+                                         FROM 
+                                            chamados 
+                                         WHERE 
+                                            ID = @ID"
 
-        Return (regsAfetados > 0)
+                dbCommand.Parameters.AddWithValue("@ID", idChamado)
+
+                Dim sucesso As Boolean = dbCommand.ExecuteNonQuery() > 0
+                Return sucesso
+            End Using
+        Catch ex As Exception
+            Return False
+        End Try
+
     End Function
 End Class
