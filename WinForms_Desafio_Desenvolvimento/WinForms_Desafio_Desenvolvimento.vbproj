@@ -106,6 +106,10 @@
     <Compile Include="BackEnd\clsDadosBase.vb" />
     <Compile Include="BackEnd\clsDadosChamados.vb" />
     <Compile Include="BackEnd\clsDadosDepartamentos.vb" />
+    <Compile Include="BackEnd\Modelos\clsChamado.vb" />
+    <Compile Include="BackEnd\Modelos\clsDepartamento.vb" />
+    <Compile Include="BackEnd\Validacoes\clsValidacaoChamados.vb" />
+    <Compile Include="BackEnd\Validacoes\clsValidacaoDepartamentos.vb" />
     <Compile Include="frmChamadosEditar.Designer.vb">
       <DependentUpon>frmChamadosEditar.vb</DependentUpon>
     </Compile>
@@ -265,5 +269,6 @@
     </Content>
     <Content Include="Netspeed.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

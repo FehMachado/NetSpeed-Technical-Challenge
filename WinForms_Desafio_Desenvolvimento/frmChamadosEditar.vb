@@ -40,14 +40,19 @@ Public Class frmChamadosEditar
     Private Sub btnSalvar_Click(sender As Object, e As EventArgs) Handles btnSalvar.Click
 
         Dim ID As Integer = 0  'Valor Padrão
-        Dim Assunto As String = Me.txtAssunto.Text
-        Dim Solicitante As String = Me.txtSolicitante.Text
-        Dim Departamento As Integer = CInt(Me.cmbDepartamento.SelectedValue)
-        Dim DataAbertura As DateTime = Me.dtpDataAbertura.Value
+        Dim assunto As String = txtAssunto.Text
+        Dim solicitante As String = txtSolicitante.Text
+        Dim departamento As Integer = CInt(cmbDepartamento.SelectedValue)
+        Dim dataAbertura As DateTime = dtpDataAbertura.Value
 
         If Not String.IsNullOrEmpty(Me.txtID.Text) Then
             ID = Integer.Parse(Me.txtID.Text)
 
+        End If
+        Dim chamados As New Chamado(assunto, solicitante, dataAbertura)
+
+        If Not ValidarChamados(chamados) Then
+            Exit Sub
         End If
 
         Dim sucesso As Boolean = DadosChamados.GravarChamado(ID, Assunto, Solicitante, Departamento, DataAbertura)
@@ -66,4 +71,14 @@ Public Class frmChamadosEditar
         Me.Close()
 
     End Sub
+    Private Function ValidarChamados(chamado As Chamado) As Boolean
+
+        Dim erros = ValidacaoChamados.Validar(chamado)
+
+        If erros.Any() Then
+            MessageBox.Show(String.Join(vbCrLf, erros), "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return False
+        End If
+        Return True
+    End Function
 End Class
