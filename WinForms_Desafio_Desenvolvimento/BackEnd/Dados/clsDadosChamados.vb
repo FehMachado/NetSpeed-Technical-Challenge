@@ -64,11 +64,6 @@ Public Class DadosChamados
 
                 If dtChamados.Rows.Count > 0 Then
                     drChamado = dtChamados.Rows(0)
-                    'Else
-                    '    MessageBox.Show("Chamado não encontrado. Por favor, verifique o ID informado.",
-                    '                "Chamado não encontrado",
-                    '                MessageBoxButtons.OK,
-                    '                MessageBoxIcon.Information)
                 End If
             End Using
         Catch ex As Exception

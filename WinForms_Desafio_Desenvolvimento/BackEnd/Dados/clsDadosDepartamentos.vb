@@ -75,14 +75,6 @@ Public Class DadosDepartamentos
 
     Public Shared Function ObterDepartamento(idDepartamento As Integer) As DataRow
 
-        'If idDepartamento <= 0 Then
-        '    MessageBox.Show("O ID do departamento fornecido é inválido. Por favor, verifique e tente novamente.",
-        '                "ID Inválido",
-        '                MessageBoxButtons.OK,
-        '                MessageBoxIcon.Warning)
-        '    Return Nothing
-        'End If
-
         Dim drDepartamentos As DataRow = Nothing
 
         Try
@@ -104,12 +96,6 @@ Public Class DadosDepartamentos
 
                 If dtDepartamentos.Rows.Count > 0 Then
                     drDepartamentos = dtDepartamentos.Rows(0)
-                Else
-                    MessageBox.Show("Departamento não encontrado. Por favor, verifique o ID informado.",
-                                "Departamento não encontrado",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information)
-
                 End If
             End Using
         Catch ex As Exception
