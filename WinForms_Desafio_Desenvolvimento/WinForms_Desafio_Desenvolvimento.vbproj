@@ -74,6 +74,7 @@
       <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -102,10 +103,9 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackEnd\clsDados.vb" />
-    <Compile Include="BackEnd\clsDadosBase.vb" />
-    <Compile Include="BackEnd\clsDadosChamados.vb" />
-    <Compile Include="BackEnd\clsDadosDepartamentos.vb" />
+    <Compile Include="BackEnd\Dados\clsDadosBase.vb" />
+    <Compile Include="BackEnd\Dados\clsDadosChamados.vb" />
+    <Compile Include="BackEnd\Dados\clsDadosDepartamentos.vb" />
     <Compile Include="BackEnd\Modelos\clsChamado.vb" />
     <Compile Include="BackEnd\Modelos\clsDepartamento.vb" />
     <Compile Include="BackEnd\Validacoes\clsValidacaoChamados.vb" />
@@ -211,10 +211,6 @@
     <EmbeddedResource Include="Relatorios\rptDepartamentos.rdlc" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\DesafioDB.db">
-      <Link>Dados\DesafioDB.db</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="SqlServerTypes\Loader.cs" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
@@ -229,6 +225,7 @@
     <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="BackEnd\Dados\DesafioDB.db" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -238,7 +235,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Relatorios\dsChamados.xsc">
       <DependentUpon>dsChamados.xsd</DependentUpon>

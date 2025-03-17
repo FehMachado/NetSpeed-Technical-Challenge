@@ -86,11 +86,11 @@ Public Class frmDepartamentosListar
             ' Obtém os dados da linha selecionada
             Dim dgvr As DataGridViewRow = Me.dgvDepartamentos.Rows(e.RowIndex)
             Dim drv As DataRowView = DirectCast(dgvr.DataBoundItem, DataRowView)
-            Dim idChamado As Integer = CInt(drv("ID"))
+            Dim departamento As Integer = CInt(drv("ID"))
 
             ' Abre o formulário de edição com os dados do chamado
-            Dim frm As New frmChamadosEditar()
-            frm.AbrirChamado(idChamado)
+            Dim frm As New frmDepartamentosEditar()
+            frm.AbrirDepartamento(departamento)
 
             Dim dlgResult As DialogResult = frm.ShowDialog()
 
