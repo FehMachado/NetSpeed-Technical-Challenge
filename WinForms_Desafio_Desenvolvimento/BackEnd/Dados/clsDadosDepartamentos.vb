@@ -83,6 +83,7 @@ Public Class DadosDepartamentos
                 dbDataAdapter As New SQLiteDataAdapter(dbCommand)
 
                 dbCommand.CommandText = "SELECT 
+                                            id,
                                             descricao 
                                         FROM 
                                             departamentos 
@@ -121,7 +122,7 @@ Public Class DadosDepartamentos
                 dbConnection.Open()
                 dbCommand.CommandText = "DELETE 
                                         FROM 
-                                            chamados 
+                                            departamentos 
                                         WHERE 
                                             ID = @ID"
 

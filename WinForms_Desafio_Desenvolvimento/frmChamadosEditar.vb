@@ -39,16 +39,12 @@ Public Class frmChamadosEditar
 
     Private Sub btnSalvar_Click(sender As Object, e As EventArgs) Handles btnSalvar.Click
 
-        Dim ID As Integer = 0  'Valor Padrão
+        Dim ID As Integer = If(String.IsNullOrEmpty(txtID.Text), 0, Integer.Parse(txtID.Text))
         Dim assunto As String = txtAssunto.Text
         Dim solicitante As String = txtSolicitante.Text
         Dim departamento As Integer = CInt(cmbDepartamento.SelectedValue)
         Dim dataAbertura As DateTime = dtpDataAbertura.Value
 
-        If Not String.IsNullOrEmpty(Me.txtID.Text) Then
-            ID = Integer.Parse(Me.txtID.Text)
-
-        End If
         Dim chamados As New Chamado(assunto, solicitante, dataAbertura)
 
         If Not ValidarChamados(chamados) Then

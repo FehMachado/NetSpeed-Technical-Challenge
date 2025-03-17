@@ -47,15 +47,15 @@ Public Class DadosChamados
                   dbDataAdapter As New SQLiteDataAdapter(dbCommand)
 
                 dbCommand.CommandText = "SELECT 
-                                    ID, 
-                                    Assunto, 
-                                    Solicitante, 
-                                    Departamento, 
-                                    DataAbertura 
-                                 FROM 
-                                    chamados 
-                                 WHERE 
-                                    ID = @ID"
+                                            ID, 
+                                            Assunto, 
+                                            Solicitante, 
+                                            Departamento, 
+                                            DataAbertura 
+                                         FROM 
+                                            chamados 
+                                         WHERE 
+                                            ID = @ID"
 
                 dbCommand.Parameters.AddWithValue("@ID", idChamado)
 

@@ -1,8 +1,17 @@
-﻿Imports System.Data
-Imports System.Data.SQLite
+﻿Imports System.Data.SQLite
+Imports System.IO
 
 Public MustInherit Class DadosBase
-    Protected Const CONNECTION_STRING As String = "Data Source=C:\Users\Felip\source\repos\WinForms_Desafio_Desenvolvimento\WinForms_Desafio_Desenvolvimento\BackEnd\Dados\DesafioDB.db;Version=3;"
+
+    Protected Shared ReadOnly Property CONNECTION_STRING As String
+        Get
+            Dim baseDirectory As String = AppDomain.CurrentDomain.BaseDirectory
+
+            Dim databasePath As String = Path.Combine(baseDirectory, "..\..\BackEnd\Dados\DesafioDB.db")
+
+            Return $"Data Source={databasePath};Version=3;"
+        End Get
+    End Property
 
     Public Shared Function ObterConexao() As SQLiteConnection
         Return New SQLiteConnection(CONNECTION_STRING)

@@ -1,9 +1,9 @@
 ﻿
 Public Class frmDepartamentosEditar
 
-    Public Sub AbrirDepartamento(ByVal idChamado As Integer)
+    Public Sub AbrirDepartamento(ByVal idDepartamento As Integer)
 
-        Dim drChamado As DataRow = DadosDepartamentos.ObterDepartamento(idChamado)
+        Dim drChamado As DataRow = DadosDepartamentos.ObterDepartamento(idDepartamento)
 
         Me.txtID.Text = CInt(drChamado("ID")).ToString()
         Me.txtDescricao.Text = CStr(drChamado("Descricao"))
@@ -17,12 +17,8 @@ Public Class frmDepartamentosEditar
 
     Private Sub btnSalvar_Click(sender As Object, e As EventArgs) Handles btnSalvar.Click
 
-        Dim ID As Integer = 0  'Valor Padrão
+        Dim ID As Integer = If(String.IsNullOrEmpty(txtID.Text), 0, Integer.Parse(txtID.Text))
         Dim Descricao As String = Me.txtDescricao.Text
-
-        If Not String.IsNullOrEmpty(Me.txtID.Text) Then
-            ID = Integer.Parse(Me.txtID.Text)
-        End If
 
         Dim departamento As New Departamento(descricao)
 
